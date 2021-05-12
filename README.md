@@ -2,14 +2,14 @@
 
 一个基于Kubernetes的复杂事件处理单元部署系统
 
-## Raspbian安装步骤
+## Raspberry Pi OS（树莓派）预安装步骤
 
-### 系统准备步骤
+### 系统准备
 
 刷好树莓派系统镜像后首先在SD卡根目录放一个名叫ssh的空文件（用以开启树莓派ssh功能）  
 进入系统后按对应node角色修改/etc/hostname中的名字（必须小写）  
 按对应node角色修改/etc/hosts中的名字（必须小写）  
-如：kubernetes-master-01、kubernetes-worker-01、kubernetes-worker-02、kubernetes-worker-03、kubernetes-worker-04等  
+如：kubernetes-master-01、kubernetes-worker-01、kubernetes-worker-02、kubernetes-worker-03、kubernetes-worker-04等 最后重启  
 换源：
 
 ```
@@ -27,7 +27,7 @@ sudo vi /etc/apt/sources.list.d/raspi.list
 注释掉原来的后加上：
 > deb http://mirrors.tuna.tsinghua.edu.cn/raspberrypi/ buster main ui
 
-### 安装准备步骤
+### 安装准备
 
 关闭swap：
 
@@ -64,8 +64,8 @@ sudo chmod +x /etc/network/if-pre-up.d/iptables
 sudo vi /boot/cmdline.txt
 ```
 
-末尾添加：
-> cgroup_enable=cpu cgroup_enable=memory
+头部添加（注意末尾与原先内容用空格隔开）：
+> cgroup_enable=memory cgroup_memory=1
 
 ```
 sudo reboot
@@ -101,17 +101,7 @@ sudo vi /usr/lib/systemd/system/docker.service
 将ExecStart改为：
 > ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --exec-opt native.cgroupdriver=systemd
 
-```
-sudo systemctl daemon-reload
-
-sudo systemctl restart docker
-
-sudo docker run hello-world
-
-sudo reboot
-```
-
-### （可选 如果需要科学上网的话）设置docker代理
+设置docker代理（可选 如果需要科学上网的话）：
 
 ```
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -129,6 +119,10 @@ Environment="NO_PROXY=localhost,127.0.0.1"
 sudo systemctl daemon-reload
 
 sudo systemctl restart docker
+
+sudo docker run hello-world
+
+sudo reboot
 ```
 
 ### 安装 kubeadm kubectl kubelet
@@ -140,6 +134,9 @@ buster版本暂时没有 这里用的stretch
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+# 如果需要科学上网 上一句可替换为：
+# curl --socks5 <此处替换为你本机的IP>:<此处替换为科学上网工具所提供socks5转发服务的端口> -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://mirrors.tuna.tsinghua.edu.cn/kubernetes/apt kubernetes-stretch main
@@ -277,13 +274,13 @@ kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get
 
 ***
 
-## Ubuntu安装步骤
+## Ubuntu（虚拟机）预安装步骤
 
-### 系统准备步骤
+### 系统准备
 
 进入系统后按对应node角色修改/etc/hostname中的名字（必须小写）  
 按对应node角色修改/etc/hosts中的名字（必须小写）  
-如：kubernetes-master-01、kubernetes-worker-01、kubernetes-worker-02、kubernetes-worker-03、kubernetes-worker-04等  
+如：kubernetes-master-01、kubernetes-worker-01、kubernetes-worker-02、kubernetes-worker-03、kubernetes-worker-04等 最后重启  
 换源：
 
 ```
@@ -305,7 +302,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted 
 /# deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse  
 /# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-proposed main restricted universe multiverse
 
-### 安装准备步骤
+### 安装准备
 
 关闭swap：
 
@@ -373,17 +370,7 @@ sudo vi /usr/lib/systemd/system/docker.service
 将ExecStart改为：
 > ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --exec-opt native.cgroupdriver=systemd
 
-```
-sudo systemctl daemon-reload
-
-sudo systemctl restart docker
-
-sudo docker run hello-world
-
-sudo reboot
-```
-
-### （可选 如果需要科学上网的话）设置docker代理
+设置docker代理（可选 如果需要科学上网的话）：
 
 ```
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -401,6 +388,10 @@ Environment="NO_PROXY=localhost,127.0.0.1"
 sudo systemctl daemon-reload
 
 sudo systemctl restart docker
+
+sudo docker run hello-world
+
+sudo reboot
 ```
 
 ### 安装 kubeadm kubectl kubelet
@@ -412,6 +403,9 @@ focal版本暂时没有 这里用的xenial
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl
 
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+# 如果需要科学上网 上一句可替换为：
+# curl --socks5 <此处替换为你本机的IP>:<此处替换为科学上网工具所提供socks5转发服务的端口> -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
 cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://mirrors.tuna.tsinghua.edu.cn/kubernetes/apt kubernetes-xenial main
