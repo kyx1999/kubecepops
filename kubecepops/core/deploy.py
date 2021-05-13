@@ -51,7 +51,7 @@ class Deploy:
 
     @staticmethod
     def clear_deploy():
-        print('Clearing...')
+        print('Clearing deploy...')
 
         services = K8sApi.get_services_ip('operator').keys()
         for service in services:
@@ -68,7 +68,7 @@ class Deploy:
                 except client.exceptions.ApiException:
                     break
 
-        print('Clear finished.')
+        print('Deploy cleared.')
 
 
 if __name__ == '__main__':

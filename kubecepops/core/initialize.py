@@ -30,7 +30,7 @@ class Initialize:
 
     @staticmethod
     def clear_initialize():
-        print('Clearing...')
+        print('Clearing initialize...')
 
         services = K8sApi.get_services_ip('initialize').keys()
         for service in services:
@@ -47,7 +47,7 @@ class Initialize:
                 except client.exceptions.ApiException:
                     break
 
-        print('Clear finished.')
+        print('Initialize cleared.')
 
 
 if __name__ == '__main__':
