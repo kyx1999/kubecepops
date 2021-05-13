@@ -6,10 +6,11 @@
 
 ### 系统准备
 
-刷好树莓派系统镜像后首先在SD卡根目录放一个名叫ssh的空文件（用以开启树莓派ssh功能）  
-进入系统后按对应node角色修改/etc/hostname中的名字（必须小写）  
-按对应node角色修改/etc/hosts中的名字（必须小写）  
-如：kubernetes-master-01、kubernetes-worker-01、kubernetes-worker-02、kubernetes-worker-03、kubernetes-worker-04等 最后重启  
+刷好树莓派系统镜像后首先在SD卡根目录放一个名叫`ssh`的空文件（用以开启树莓派ssh功能）  
+进入系统后按对应node角色修改`/etc/hostname`中的名字（必须小写）  
+按对应node角色修改`/etc/hosts`中的名字（必须小写）  
+如：`kubernetes-master-01`、`kubernetes-worker-01`、`kubernetes-worker-02`、`kubernetes-worker-03`、`kubernetes-worker-04`等
+最后重启  
 换源：
 
 ```
@@ -35,7 +36,7 @@ sudo vi /etc/apt/sources.list.d/raspi.list
 sudo vi /etc/dphys-swapfile
 ```
 
-将CONF_SWAPSIZE修改为0  
+将`CONF_SWAPSIZE`的值修改为`0`  
 开放端口（这里为了方便直接全部打开了 严格来说应该按照官方文档要求仅打开需要的端口）：
 
 ```
@@ -98,7 +99,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 sudo vi /usr/lib/systemd/system/docker.service
 ```
 
-将ExecStart改为：
+将`ExecStart`改为：
 > ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --exec-opt native.cgroupdriver=systemd
 
 设置docker代理（可选 如果需要科学上网的话）：
@@ -161,7 +162,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-其中$HOME/.kube/config文件可以复制出来到项目根目录下的kubecepops.kubetools目录下备用
+其中`$HOME/.kube/config`文件可以复制出来到项目根目录下的`kubecepops/kubetools`目录下备用
 
 ### 安装pod网络
 
@@ -189,7 +190,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 ### 加入worker节点
 
 ```
-kubeadm token create
+sudo kubeadm token create
 ```
 
 得到值1
@@ -213,8 +214,8 @@ sudo kubeadm join <master节点IP>:6443 --token <值1> \
 kubectl apply -f components.yaml
 ```
 
-components.yaml为项目根目录下的文件 此为v0.4.2版本 也可以到 https://github.com/kubernetes-sigs/metrics-server/releases 选择最新版本
-但是要在文件的Deployment中的spec.template.spec.- args中加上<- --kubelet-insecure-tls>的参数
+`components.yaml`为项目根目录下的文件 此为`v0.4.2`版本 也可以到 https://github.com/kubernetes-sigs/metrics-server/releases 选择最新版本
+但是要在文件的`Deployment`中的`spec.template.spec.- args`中加上`- --kubelet-insecure-tls`的参数
 
 ### （可选）安装Dashboard UI
 
@@ -242,7 +243,7 @@ ssh -L localhost:8001:localhost:8001 -NT pi@<master节点IP>
 
 > http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 
-新建文件dash-admin-user.yaml：
+新建文件`dash-admin-user.yaml`：
 > apiVersion: v1  
 kind: ServiceAccount  
 metadata:  
@@ -278,9 +279,10 @@ kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get
 
 ### 系统准备
 
-进入系统后按对应node角色修改/etc/hostname中的名字（必须小写）  
-按对应node角色修改/etc/hosts中的名字（必须小写）  
-如：kubernetes-master-01、kubernetes-worker-01、kubernetes-worker-02、kubernetes-worker-03、kubernetes-worker-04等 最后重启  
+进入系统后按对应node角色修改`/etc/hostname`中的名字（必须小写）  
+按对应node角色修改`/etc/hosts`中的名字（必须小写）  
+如：`kubernetes-master-01`、`kubernetes-worker-01`、`kubernetes-worker-02`、`kubernetes-worker-03`、`kubernetes-worker-04`等
+最后重启  
 换源：
 
 ```
@@ -310,7 +312,7 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ focal-security main restricted 
 sudo vi /etc/fstab
 ```
 
-将/swapfile none swap sw 0 0注释掉  
+将`/swapfile none swap sw 0 0`注释掉  
 开放端口（这里为了方便直接全部打开了 严格来说应该按照官方文档要求仅打开需要的端口）：
 
 ```
@@ -356,7 +358,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo apt-key fingerprint 0EBFCD88
 
 sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   "deb [arch=amd64] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
 
@@ -367,7 +369,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 sudo vi /usr/lib/systemd/system/docker.service
 ```
 
-将ExecStart改为：
+将`ExecStart`改为：
 > ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --exec-opt native.cgroupdriver=systemd
 
 设置docker代理（可选 如果需要科学上网的话）：
@@ -430,7 +432,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-其中$HOME/.kube/config文件可以复制出来到项目根目录下的kubecepops.kubetools目录下备用
+其中`$HOME/.kube/config`文件可以复制出来到项目根目录下的`kubecepops/kubetools`目录下备用
 
 ### 安装pod网络
 
@@ -458,7 +460,7 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documen
 ### 加入worker节点
 
 ```
-kubeadm token create
+sudo kubeadm token create
 ```
 
 得到值1
@@ -482,8 +484,8 @@ sudo kubeadm join <master节点IP>:6443 --token <值1> \
 kubectl apply -f components.yaml
 ```
 
-components.yaml为项目根目录下的文件 此为v0.4.2版本 也可以到 https://github.com/kubernetes-sigs/metrics-server/releases 选择最新版本
-但是要在文件的Deployment中的spec.template.spec.- args中加上<- --kubelet-insecure-tls>的参数
+`components.yaml`为项目根目录下的文件 此为`v0.4.2`版本 也可以到 https://github.com/kubernetes-sigs/metrics-server/releases 选择最新版本
+但是要在文件的`Deployment`中的`spec.template.spec.- args`中加上`- --kubelet-insecure-tls`的参数
 
 ### （可选）安装Dashboard UI
 
@@ -529,7 +531,7 @@ ssh -L localhost:8001:localhost:8001 -NT kyx1999@<master节点IP>
 
 > http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 
-新建文件dash-admin-user.yaml：
+新建文件`dash-admin-user.yaml`：
 > apiVersion: v1  
 kind: ServiceAccount  
 metadata:  
@@ -591,13 +593,13 @@ sudo docker login
 
 ### 打包镜像
 
-在Dockerfile所在的目录下（即项目根目录）：
+在`Dockerfile`所在的目录下（即项目根目录）：
 
 ```
 sudo docker build -t kubecepops:latest .
 ```
 
-查看kubecepops:latest的IMAGE ID：
+查看`kubecepops:latest`的IMAGE ID：
 
 ```
 sudo docker images
