@@ -28,6 +28,8 @@ def test(method: Callable[..., Method]):
                     break
             except TypeError:
                 continue
+            except AttributeError:
+                continue
 
         while True:
             time.sleep(20)
@@ -36,6 +38,8 @@ def test(method: Callable[..., Method]):
                 if pod.status.container_statuses[0].state.terminated.reason == 'Completed':
                     break
             except TypeError:
+                continue
+            except AttributeError:
                 continue
 
         source_log = method.__name__.lower() + '-source-' + str(burden_level) + '.log'

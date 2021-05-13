@@ -7,7 +7,7 @@
 ### 系统准备
 
 刷好树莓派系统镜像后首先在SD卡根目录放一个名叫`ssh`的空文件（用以开启树莓派ssh功能）  
-进入系统后按对应node角色修改`/etc/hostname`中的名字（必须小写）  
+进入系统（默认账号`pi` 密码`raspberry`）后按对应node角色修改`/etc/hostname`中的名字（必须小写）  
 按对应node角色修改`/etc/hosts`中的名字（必须小写）  
 如：`kubernetes-master-01`、`kubernetes-worker-01`、`kubernetes-worker-02`、`kubernetes-worker-03`、`kubernetes-worker-04`等
 最后重启  

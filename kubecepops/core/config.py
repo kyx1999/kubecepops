@@ -11,7 +11,7 @@ class Config:
     image = 'kyx1999/kubecepops:latest'  # operator镜像仓库
     image_pull_policy = 'IfNotPresent'  # Always：总是拉取镜像，IfNotPresent：本地有则使用本地镜像，否则拉取，Never：只使用本地镜像，从不拉取，即使本地没有
     service_port = 9663  # 用于帮助每个pod通信的service的端口
-    event_quantity = 50000  # 最大发送事件数量
+    event_quantity = 10000  # 最大发送事件数量
     burden_level = 0  # operator等效负载等级(0 - 8)
     response_time_aware_strategy = 'responsetimeaware.txt'  # 响应时间感知算法策略文件名(默认需先放置于kubecepops.methods.samples包下)
     reinforcement_learning_strategy = 'reinforcementlearning.txt'  # 强化学习算法策略文件名(默认需先放置于kubecepops.methods.samples包下)

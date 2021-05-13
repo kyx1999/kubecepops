@@ -44,6 +44,8 @@ class Deploy:
                                 break
                         except TypeError:
                             continue
+                        except AttributeError:
+                            continue
 
             print('Deploy finished.')
         else:

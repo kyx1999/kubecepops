@@ -25,6 +25,8 @@ class Initialize:
                         break
                 except TypeError:
                     continue
+                except AttributeError:
+                    continue
 
         print('Initialize finished.')
 
