@@ -47,7 +47,7 @@ class Initialize:
                 except client.exceptions.ApiException:
                     break
 
-        print('Initialize finished.')
+        print('Clear finished.')
 
 
 if __name__ == '__main__':
